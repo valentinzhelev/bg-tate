@@ -1,6 +1,9 @@
 import Navigation from "./components/Navigation";
 import { Routes, Route } from "react-router-dom";
 
+import PrivateGuard from "./guards/PrivateGuard";
+import GuestGuard from "./guards/GuestGuard";
+
 import Home from "./pages/Home";
 import Catalog from "./pages/Catalog";
 import Login from "./pages/Login";
@@ -16,15 +19,48 @@ function App() {
 
       <main>
         <Routes>
+          {/* Публични страници */}
           <Route path="/" element={<Home />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/catalog/:topicId" element={<Details />} />
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          {/* Само за гости */}
+          <Route
+            path="/login"
+            element={
+              <GuestGuard>
+                <Login />
+              </GuestGuard>
+            }
+          />
 
-          <Route path="/create" element={<CreateTopic />} />
-          <Route path="/edit/:topicId" element={<EditTopic />} />
+          <Route
+            path="/register"
+            element={
+              <GuestGuard>
+                <Register />
+              </GuestGuard>
+            }
+          />
+
+          {/* Само за логнати */}
+          <Route
+            path="/create"
+            element={
+              <PrivateGuard>
+                <CreateTopic />
+              </PrivateGuard>
+            }
+          />
+
+          <Route
+            path="/edit/:topicId"
+            element={
+              <PrivateGuard>
+                <EditTopic />
+              </PrivateGuard>
+            }
+          />
         </Routes>
       </main>
     </>
