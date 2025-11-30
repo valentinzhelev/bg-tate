@@ -1,0 +1,33 @@
+.form-field {
+  margin-bottom: var(--spacing-6);
+}
+
+.form-field:last-child {
+  margin-bottom: var(--spacing-0);
+}
+
+.form-field label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.form-field input.error,
+.form-field textarea.error {
+  border-color: var(--color-error);
+}
+
+.form-field input.error:focus,
+.form-field textarea.error:focus {
+  box-shadow: 0 0 0 3px var(--color-error-light);
+}
+
+.form-field-error {
+  display: block;
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+  margin-top: var(--spacing-1);
+}
+

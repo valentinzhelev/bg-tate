@@ -1,4 +1,5 @@
 import Navigation from "./components/Navigation";
+import Footer from "./components/Footer";
 import { Routes, Route } from "react-router-dom";
 
 import PrivateGuard from "./guards/PrivateGuard";
@@ -63,6 +64,8 @@ function App() {
           />
         </Routes>
       </main>
+
+      <Footer />
     </>
   );
 }

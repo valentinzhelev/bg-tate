@@ -1,6 +1,12 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import PageTitle from "../components/PageTitle";
+import FormField from "../components/FormField";
+import Button from "../components/Button";
+import ErrorMessage from "../components/ErrorMessage";
+import Container from "../components/Container";
+import "./Register.css";
 
 export default function Register() {
     const { register } = useContext(AuthContext);
@@ -8,12 +14,14 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const onRegister = async (e) => {
         e.preventDefault();
+        setError("");
 
-        if (!email || !password || !repeatPassword) {
+        if (!email.trim() || !password.trim() || !repeatPassword.trim()) {
             setError("Моля, попълнете всички полета.");
             return;
         }
@@ -23,44 +31,71 @@ export default function Register() {
             return;
         }
 
+        if (password.length < 6) {
+            setError("Паролата трябва да бъде поне 6 символа.");
+            return;
+        }
+
+        setLoading(true);
         try {
-            await register(email, password);
+            await register(email.trim(), password);
             navigate("/catalog");
         } catch (err) {
-            setError("Грешка при регистрация.");
+            setError("Грешка при регистрация. Моля опитайте отново.");
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <section>
-            <h1>Регистрация</h1>
+        <Container>
+            <div className="auth-page">
+                <PageTitle>Регистрация</PageTitle>
 
-            <form onSubmit={onRegister}>
-                {error && <p style={{ color: "red" }}>{error}</p>}
+                <form className="form" onSubmit={onRegister}>
+                    <ErrorMessage message={error} />
 
-                <label>Email:</label>
-                <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+                    <FormField
+                        label="Email"
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Въведете вашия email"
+                        required
+                    />
 
-                <label>Парола:</label>
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                    <FormField
+                        label="Парола"
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Въведете вашата парола"
+                        required
+                    />
 
-                <label>Повтори парола:</label>
-                <input
-                    type="password"
-                    value={repeatPassword}
-                    onChange={(e) => setRepeatPassword(e.target.value)}
-                />
+                    <FormField
+                        label="Повтори парола"
+                        id="repeatPassword"
+                        type="password"
+                        value={repeatPassword}
+                        onChange={(e) => setRepeatPassword(e.target.value)}
+                        placeholder="Повторете вашата парола"
+                        required
+                    />
 
-                <button type="submit">Регистрация</button>
-            </form>
-        </section>
+                    <div className="form-actions">
+                        <Button type="submit" disabled={loading} fullWidth>
+                            {loading ? "Регистриране..." : "Регистрация"}
+                        </Button>
+                    </div>
+
+                    <p className="form-footer">
+                        Вече имаш акаунт? <Link to="/login">Влез</Link>
+                    </p>
+                </form>
+            </div>
+        </Container>
     );
 }

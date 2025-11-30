@@ -1,16 +1,72 @@
-# React + Vite
+# BG-Tate - Форум за бащи
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+BG-Tate е платформа за бащи, които искат да споделят опит, да получат подкрепа и да си помагат взаимно. Тук можеш да говориш свободно за отглеждането на децата, за трудните моменти в живота и за всичко, за което понякога е трудно да попиташ.
 
-Currently, two official plugins are available:
+## Функционалности
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Публична част
+- Начална страница - Представяне на платформата
+- Каталог - Списък с всички теми
+- Детайли - Преглед на конкретна тема
+- Вход - Форма за вход
+- Регистрация - Форма за регистрация
 
-## React Compiler
+### Частна част (за логнати потребители)
+- Създаване на тема - Създаване на нова тема за дискусия
+- Редактиране на тема - Редактиране на собствени теми
+- Изтриване на тема - Изтриване на собствени теми
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Технологии
 
-## Expanding the ESLint configuration
+- React
+- React Router
+- CSS Variables
+- REST API
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Стартиране на проекта
+
+1. Инсталиране на зависимости:
+```bash
+npm install
+```
+
+2. Стартиране на development сървър:
+```bash
+npm run dev
+```
+
+3. Отваряне на браузър:
+```
+http://localhost:5173
+```
+
+## Автентикация
+
+Проектът използва Context API за управление на автентикация:
+- Login - Вход с email и парола
+- Register - Регистрация на нов потребител
+- Logout - Изход от системата
+- Route Guards - Защита на маршрутите
+
+## CRUD операции
+
+### Теми (Topics)
+- Create - Създаване на нова тема
+- Read - Преглед на всички теми и детайли
+- Update - Редактиране на собствена тема
+- Delete - Изтриване на собствена тема
+
+## React концепции
+
+Проектът демонстрира:
+- React Hooks - useState, useEffect, useContext
+- Context API - AuthContext за автентикация
+- Stateless компоненти - Преизползваеми UI компоненти
+- Stateful компоненти - Страници с локално състояние
+- Bound Forms - Контролирани форми
+- Synthetic Events - Обработка на събития
+- Component Lifecycle - useEffect за lifecycle hooks
+
+## Автор
+
+Създаден като проектна задача за SoftUni ReactJS изпит.

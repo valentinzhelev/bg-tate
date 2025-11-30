@@ -2,6 +2,12 @@ import { useState, useContext } from "react";
 import { topicService } from "../services/topicService";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import PageTitle from "../components/PageTitle";
+import FormField from "../components/FormField";
+import Button from "../components/Button";
+import ErrorMessage from "../components/ErrorMessage";
+import Container from "../components/Container";
+import "./CreateTopic.css";
 
 export default function CreateTopic() {
     const { user } = useContext(AuthContext);
@@ -9,42 +15,68 @@ export default function CreateTopic() {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        setError("");
 
-        if (!title || !content) {
-            alert("Попълнете всички полета");
+        if (!title.trim() || !content.trim()) {
+            setError("Попълнете всички полета");
             return;
         }
 
-        await topicService.create(
-            { title, content, ownerId: user.email },
-            user.accessToken
-        );
-
-        navigate("/catalog");
+        setLoading(true);
+        try {
+            await topicService.create(
+                { title: title.trim(), content: content.trim(), ownerId: user.email },
+                user.accessToken
+            );
+            navigate("/catalog");
+        } catch (err) {
+            setError("Грешка при създаване на темата. Моля опитайте отново.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <section>
-            <h1>Създай тема</h1>
+        <Container>
+            <div className="form-page">
+                <PageTitle>Създай тема</PageTitle>
 
-            <form onSubmit={onSubmit}>
-                <label>Заглавие</label>
-                <input
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
+                <form className="form" onSubmit={onSubmit}>
+                    <ErrorMessage message={error} />
 
-                <label>Съдържание</label>
-                <textarea
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                />
+                    <FormField
+                        label="Заглавие"
+                        id="title"
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="Въведете заглавие на темата"
+                        required
+                    />
 
-                <button type="submit">Създай</button>
-            </form>
-        </section>
+                    <FormField
+                        label="Съдържание"
+                        id="content"
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        placeholder="Въведете съдържание на темата"
+                        required
+                        textarea
+                        rows={8}
+                    />
+
+                    <div className="form-actions">
+                        <Button type="submit" disabled={loading} fullWidth>
+                            {loading ? "Създаване..." : "Създай"}
+                        </Button>
+                    </div>
+                </form>
+            </div>
+        </Container>
     );
 }
