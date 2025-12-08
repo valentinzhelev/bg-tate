@@ -10,6 +10,10 @@
   --color-primary-light: #dbeafe;
   --color-primary-dark: #1e40af;
   
+  --color-teal: #14b8a6;
+  --color-teal-hover: #0d9488;
+  --color-teal-light: #ccfbf1;
+  
   --color-secondary: #64748b;
   --color-secondary-hover: #475569;
   --color-secondary-light: #f1f5f9;
@@ -101,7 +105,7 @@
   --container-max-width: 1200px;
   --container-padding: var(--spacing-4);
   
-  --nav-height: 72px;
+  --nav-height: 112px;
   --footer-height: auto;
 }
 

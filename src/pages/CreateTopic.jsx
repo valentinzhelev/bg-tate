@@ -30,7 +30,13 @@ export default function CreateTopic() {
         setLoading(true);
         try {
             await topicService.create(
-                { title: title.trim(), content: content.trim(), ownerId: user.email },
+                {
+                    title: title.trim(),
+                    content: content.trim(),
+                    ownerId: user.email,
+                    likes: 0,
+                    likedBy: [],
+                },
                 user.accessToken
             );
             navigate("/catalog");
