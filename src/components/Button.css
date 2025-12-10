@@ -30,16 +30,19 @@
 }
 
 .btn-primary {
+  border-radius: 999px;
+  border: 1px solid var(--color-primary);
   background-color: var(--color-primary);
-  color: var(--color-text-inverse);
-  border-color: var(--color-primary);
+  color: #ffffff;
+  padding: 9px 22px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.16s ease, box-shadow 0.16s ease;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  background-color: var(--color-primary-dark);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.28);
 }
 
 .btn-secondary {
@@ -54,14 +57,18 @@
 }
 
 .btn-outline {
+  border-radius: 999px;
+  border: 1px solid var(--color-primary);
   background-color: transparent;
   color: var(--color-primary);
-  border-color: var(--color-primary);
+  padding: 9px 22px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.16s ease, color 0.16s ease;
 }
 
 .btn-outline:hover:not(:disabled) {
-  background-color: var(--color-primary-light);
-  border-color: var(--color-primary-hover);
+  background-color: rgba(15, 159, 173, 0.06);
 }
 
 .btn-danger {

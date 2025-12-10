@@ -38,6 +38,20 @@
   overflow: hidden;
 }
 
+.catalog-search-info {
+  padding: var(--spacing-4) var(--spacing-6);
+  background-color: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.catalog-search-info strong {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
 .forum-topic-header {
   display: grid;
   grid-template-columns: 1fr 120px 120px 180px;

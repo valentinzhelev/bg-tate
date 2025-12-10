@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { topicService } from "../services/topicService";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import Container from "../components/Container";
 import Button from "../components/Button";
@@ -10,6 +10,10 @@ export default function Catalog() {
     const [topics, setTopics] = useState([]);
     const [loading, setLoading] = useState(true);
     const { isAuthenticated } = useContext(AuthContext);
+    const location = useLocation();
+    
+    const searchParams = new URLSearchParams(location.search);
+    const search = searchParams.get("search")?.toLowerCase() || "";
 
     useEffect(() => {
         topicService.getAll()
@@ -22,6 +26,15 @@ export default function Catalog() {
                 setLoading(false);
             });
     }, []);
+
+    const filteredTopics = topics.filter((topic) => {
+        if (!search) return true;
+
+        const title = topic.title?.toLowerCase() || "";
+        const content = topic.content?.toLowerCase() || "";
+
+        return title.includes(search) || content.includes(search);
+    });
 
     const formatDate = (dateString) => {
         if (!dateString) return "Преди малко";
@@ -60,22 +73,29 @@ export default function Catalog() {
                     <div className="forum-loading">
                         <p>Зареждане...</p>
                     </div>
-                ) : topics.length === 0 ? (
+                ) : filteredTopics.length === 0 ? (
                     <div className="forum-empty">
-                        <p>Няма създадени теми.</p>
-                        <p className="forum-empty-subtitle">Бъди първият, който споделя!</p>
+                        <p>{search ? "Няма намерени резултати." : "Няма създадени теми."}</p>
+                        <p className="forum-empty-subtitle">
+                            {search ? "Опитай с друга дума." : "Бъди първият, който споделя!"}
+                        </p>
                     </div>
                 ) : (
                     <div className="forum-topics">
+                        {search && (
+                            <p className="catalog-search-info">
+                                Резултати за: <strong>{searchParams.get("search")}</strong>
+                            </p>
+                        )}
                         <div className="forum-topic-header">
                             <div className="forum-topic-title-col">Тема</div>
-                            <div className="forum-topic-stats-col">Отговори</div>
+                            <div className="forum-topic-stats-col">Харесвания</div>
                             <div className="forum-topic-views-col">Преглеждания</div>
                             <div className="forum-topic-last-col">Последен пост</div>
                         </div>
 
                         <ul className="forum-topic-list">
-                            {topics.map(topic => (
+                            {filteredTopics.map(topic => (
                                 <li key={topic.id} className="forum-topic-item">
                                     <Link to={`/catalog/${topic.id}`} className="forum-topic-link">
                                         <div className="forum-topic-avatar">
@@ -92,8 +112,8 @@ export default function Catalog() {
                                             </div>
                                         </div>
                                         <div className="forum-topic-stats">
-                                            <span className="forum-stat-value">0</span>
-                                            <span className="forum-stat-label">отговори</span>
+                                            <span className="forum-stat-value">{topic.likes ?? 0}</span>
+                                            <span className="forum-stat-label">харесвания</span>
                                         </div>
                                         <div className="forum-topic-views">
                                             <span className="forum-stat-value">0</span>

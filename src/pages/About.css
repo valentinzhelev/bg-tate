@@ -1,0 +1,15 @@
+.page-static {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.page-static h1 {
+  margin-bottom: var(--spacing-6);
+}
+
+.page-static p {
+  margin-bottom: var(--spacing-4);
+  line-height: var(--line-height-relaxed);
+}
+

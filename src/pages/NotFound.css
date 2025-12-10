@@ -1,0 +1,19 @@
+.page-center {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.page-center h1 {
+  margin-bottom: var(--spacing-4);
+}
+
+.page-center p {
+  margin-bottom: var(--spacing-6);
+  color: var(--color-text-muted);
+}
+

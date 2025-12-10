@@ -10,54 +10,62 @@ export default function Home() {
     const { isAuthenticated } = useContext(AuthContext);
 
     return (
-        <Container>
-            <div className="home-page">
-                <section className="home-hero">
-                    <div className="hero-badge">За бащи и мъже</div>
-                    <h1 className="hero-title">Добре дошли в BG-Tate</h1>
-                    <p className="hero-subtitle">
-                        Платформа за бащи, които искат да споделят опит, да получат подкрепа и да си помагат взаимно. 
-                        Тук можеш да говориш свободно за отглеждането на децата, за трудните моменти в живота и за всичко, 
-                        за което понякога е трудно да попиташ. Твоят глас има значение.
-                    </p>
-                    
-                    <div className="home-actions">
-                        {!isAuthenticated ? (
-                            <>
-                                <Link to="/register">
-                                    <Button>Започни сега</Button>
-                                </Link>
-                                <Link to="/catalog">
-                                    <Button variant="outline">Разгледай форума</Button>
-                                </Link>
-                            </>
-                        ) : (
-                            <>
-                                <Link to="/catalog">
-                                    <Button>Разгледай форума</Button>
-                                </Link>
-                                <Link to="/create">
-                                    <Button variant="outline">Създай тема</Button>
-                                </Link>
-                            </>
-                        )}
+        <>
+            <section className="hero">
+                <div className="hero-inner container">
+                    <div className="hero-text-block">
+                        <p className="hero-kicker">За бащи и мъже</p>
+                        <h1 className="hero-title">Добре дошли в BG-Tate</h1>
+                        <p className="hero-lead">
+                            Платформа за бащи, които искат да споделят опит, да получат подкрепа и
+                            да си помагат взаимно. Тук можеш да говориш свободно за отглеждането на
+                            децата, за трудните моменти в живота и за всичко, за което понякога е
+                            трудно да попиташ.
+                        </p>
+                        <div className="hero-actions">
+                            {!isAuthenticated ? (
+                                <>
+                                    <Link to="/catalog" className="btn-primary">
+                                        Разгледай форума
+                                    </Link>
+                                    <Link to="/register" className="btn-outline">
+                                        Започни сега
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    <Link to="/catalog" className="btn-primary">
+                                        Разгледай форума
+                                    </Link>
+                                    <Link to="/create" className="btn-outline">
+                                        Създай тема
+                                    </Link>
+                                </>
+                            )}
+                        </div>
                     </div>
-                </section>
+                </div>
+            </section>
 
-                <section className="home-stats">
-                    <div className="stat-item">
+            <section className="stats-section">
+                <div className="stats-grid">
+                    <div className="stats-card">
                         <div className="stat-number">100+</div>
                         <div className="stat-label">Активни потребители</div>
                     </div>
-                    <div className="stat-item">
+                    <div className="stats-card">
                         <div className="stat-number">500+</div>
                         <div className="stat-label">Теми за дискусия</div>
                     </div>
-                    <div className="stat-item">
+                    <div className="stats-card">
                         <div className="stat-number">24/7</div>
                         <div className="stat-label">Достъпност</div>
                     </div>
-                </section>
+                </div>
+            </section>
+
+            <Container>
+                <div className="home-page">
 
                 <section className="home-features">
                     <Card>
@@ -98,7 +106,8 @@ export default function Home() {
                         </Card>
                     </div>
                 </section>
-            </div>
-        </Container>
+                </div>
+            </Container>
+        </>
     );
 }

@@ -1,4 +1,4 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import logo from "../assets/bg-tate-logo-nobg.png";
@@ -7,8 +7,8 @@ import "./Navigation.css";
 function Navigation() {
   const { isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleLogout = () => {
     logout();
@@ -16,59 +16,71 @@ function Navigation() {
     setMenuOpen(false);
   };
 
-  const isActive = (path) => {
-    if (path === "/catalog") {
-      return location.pathname.startsWith("/catalog");
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const trimmed = searchQuery.trim();
+
+    if (!trimmed) {
+      navigate("/catalog");
+      return;
     }
-    return location.pathname === path;
+
+    navigate(`/catalog?search=${encodeURIComponent(trimmed)}`);
   };
 
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <nav className="navigation">
+    <header className="site-header">
+      {/* TOP BAR */}
       <div className="nav-top">
-        <div className="nav-top-container">
-          <div className="nav-logo">
-            <Link to="/" onClick={closeMenu}>
-              <img src={logo} alt="BG-Tate logo" />
-            </Link>
+        <div className="nav-top-inner">
+          <div className="nav-left">
+            <div className="nav-logo-wrapper">
+              <Link to="/" className="nav-logo-link" onClick={closeMenu}>
+                <img src={logo} alt="bg-tate" className="nav-logo" />
+              </Link>
+            </div>
           </div>
 
-          <div className="nav-top-right">
+          {/* SEARCH CENTER */}
+          <div className="nav-search">
+            <form onSubmit={handleSearchSubmit} className="nav-search-form">
+              <div className="nav-search-inner">
+                <input
+                  type="search"
+                  className="nav-search-input"
+                  placeholder="Търси във форума..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </form>
+          </div>
+
+          <div className="nav-right">
             {!isAuthenticated ? (
-              <>
-                <Link 
-                  to="/login" 
-                  className="nav-link"
-                  onClick={closeMenu}
-                >
+              <div className="nav-auth-buttons">
+                <NavLink to="/login" className="nav-link-ghost nav-link-button" onClick={closeMenu}>
                   Вход
-                </Link>
-                <Link 
-                  to="/register" 
-                  className="nav-btn-primary"
-                  onClick={closeMenu}
-                >
+                </NavLink>
+                <NavLink to="/register" className="nav-link-primary nav-link-button" onClick={closeMenu}>
                   Регистрация
-                </Link>
-              </>
+                </NavLink>
+              </div>
             ) : (
-              <>
-                <Link 
-                  to="/create" 
-                  className="nav-link"
-                  onClick={closeMenu}
-                >
+              <div className="nav-auth-buttons">
+                <NavLink to="/create" className="nav-link-primary nav-link-button" onClick={closeMenu}>
                   Нова тема
-                </Link>
-                <button 
-                  onClick={handleLogout} 
-                  className="nav-btn-secondary"
+                </NavLink>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="nav-link-ghost nav-link-button"
                 >
                   Изход
                 </button>
-              </>
+              </div>
             )}
           </div>
 
@@ -82,83 +94,166 @@ function Navigation() {
         </div>
       </div>
 
-      <div className="nav-bottom">
-        <div className="nav-bottom-container">
-          <ul className="nav-main-menu">
-            <li>
-              <Link 
-                to="/" 
-                onClick={closeMenu}
-                className={isActive("/") && location.pathname === "/" ? "active" : ""}
-              >
-                Начало
-              </Link>
-            </li>
-            <li>
-              <Link 
-                to="/catalog" 
-                onClick={closeMenu}
-                className={isActive("/catalog") ? "active" : ""}
-              >
-                Форум
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
+      {/* BOTTOM BAR */}
+      <nav className="nav-bottom">
+        <div className="nav-bottom-inner">
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              "nav-main-link" + (isActive ? " nav-main-link-active" : "")
+            }
+            onClick={closeMenu}
+          >
+            Начало
+          </NavLink>
 
+          <NavLink
+            to="/catalog"
+            className={({ isActive }) =>
+              "nav-main-link" + (isActive ? " nav-main-link-active" : "")
+            }
+            onClick={closeMenu}
+          >
+            Форум
+          </NavLink>
+
+          <NavLink
+            to="/popular"
+            className={({ isActive }) =>
+              "nav-main-link" + (isActive ? " nav-main-link-active" : "")
+            }
+            onClick={closeMenu}
+          >
+            Популярни
+          </NavLink>
+
+          <NavLink
+            to="/rules"
+            className={({ isActive }) =>
+              "nav-main-link" + (isActive ? " nav-main-link-active" : "")
+            }
+            onClick={closeMenu}
+          >
+            Правила
+          </NavLink>
+
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              "nav-main-link" + (isActive ? " nav-main-link-active" : "")
+            }
+            onClick={closeMenu}
+          >
+            За bg-tate
+          </NavLink>
+
+          {isAuthenticated && (
+            <NavLink
+              to="/my-topics"
+              className={({ isActive }) =>
+                "nav-main-link" + (isActive ? " nav-main-link-active" : "")
+              }
+              onClick={closeMenu}
+            >
+              Моите теми
+            </NavLink>
+          )}
+        </div>
+      </nav>
+
+      {/* MOBILE MENU */}
       <div className={`nav-mobile-menu ${menuOpen ? 'open' : ''}`}>
         <ul className="nav-mobile-list">
           <li>
-            <Link 
+            <NavLink 
               to="/" 
+              end
+              className={({ isActive }) => isActive ? "active" : ""}
               onClick={closeMenu}
-              className={isActive("/") && location.pathname === "/" ? "active" : ""}
             >
               Начало
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link 
+            <NavLink 
               to="/catalog" 
+              className={({ isActive }) => isActive ? "active" : ""}
               onClick={closeMenu}
-              className={isActive("/catalog") ? "active" : ""}
             >
               Форум
-            </Link>
+            </NavLink>
           </li>
+          <li>
+            <NavLink 
+              to="/popular" 
+              className={({ isActive }) => isActive ? "active" : ""}
+              onClick={closeMenu}
+            >
+              Популярни
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/rules" 
+              className={({ isActive }) => isActive ? "active" : ""}
+              onClick={closeMenu}
+            >
+              Правила
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/about" 
+              className={({ isActive }) => isActive ? "active" : ""}
+              onClick={closeMenu}
+            >
+              За bg-tate
+            </NavLink>
+          </li>
+          {isAuthenticated && (
+            <li>
+              <NavLink 
+                to="/my-topics" 
+                className={({ isActive }) => isActive ? "active" : ""}
+                onClick={closeMenu}
+              >
+                Моите теми
+              </NavLink>
+            </li>
+          )}
           {!isAuthenticated && (
             <>
               <li>
-                <Link 
+                <NavLink 
                   to="/login" 
+                  className={({ isActive }) => isActive ? "active" : ""}
                   onClick={closeMenu}
-                  className={isActive("/login") ? "active" : ""}
                 >
                   Вход
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link 
+                <NavLink 
                   to="/register" 
+                  className={({ isActive }) => isActive ? "active" : ""}
                   onClick={closeMenu}
-                  className={isActive("/register") ? "active" : ""}
                 >
                   Регистрация
-                </Link>
+                </NavLink>
               </li>
             </>
           )}
           {isAuthenticated && (
             <>
               <li>
-                <Link 
+                <NavLink 
                   to="/create" 
+                  className={({ isActive }) => isActive ? "active" : ""}
                   onClick={closeMenu}
-                  className={isActive("/create") ? "active" : ""}
                 >
                   Нова тема
-                </Link>
+                </NavLink>
               </li>
               <li>
                 <button onClick={handleLogout} className="nav-mobile-logout">
@@ -169,7 +264,7 @@ function Navigation() {
           )}
         </ul>
       </div>
-    </nav>
+    </header>
   );
 }
 

@@ -15,24 +15,45 @@ export default function CreateTopic() {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
+    const [serverError, setServerError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        setError("");
 
-        if (!title.trim() || !content.trim()) {
-            setError("Попълнете всички полета");
+        const trimmedTitle = title.trim();
+        const trimmedContent = content.trim();
+
+        const newErrors = {};
+
+        if (!trimmedTitle) {
+            newErrors.title = "Моля, въведи заглавие.";
+        } else if (trimmedTitle.length < 3) {
+            newErrors.title = "Заглавието трябва да е поне 3 символа.";
+        }
+
+        if (!trimmedContent) {
+            newErrors.content = "Моля, въведи съдържание.";
+        } else if (trimmedContent.length < 10) {
+            newErrors.content = "Съдържанието трябва да е поне 10 символа.";
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            setServerError("");
             return;
         }
 
-        setLoading(true);
         try {
+            setIsSubmitting(true);
+            setErrors({});
+            setServerError("");
+
             await topicService.create(
                 {
-                    title: title.trim(),
-                    content: content.trim(),
+                    title: trimmedTitle,
+                    content: trimmedContent,
                     ownerId: user.email,
                     likes: 0,
                     likedBy: [],
@@ -41,9 +62,10 @@ export default function CreateTopic() {
             );
             navigate("/catalog");
         } catch (err) {
-            setError("Грешка при създаване на темата. Моля опитайте отново.");
+            console.error(err);
+            setServerError("Възникна грешка при записа на темата. Моля, опитай отново.");
         } finally {
-            setLoading(false);
+            setIsSubmitting(false);
         }
     };
 
@@ -53,7 +75,7 @@ export default function CreateTopic() {
                 <PageTitle>Създай тема</PageTitle>
 
                 <form className="form" onSubmit={onSubmit}>
-                    <ErrorMessage message={error} />
+                    {serverError && <ErrorMessage message={serverError} />}
 
                     <FormField
                         label="Заглавие"
@@ -63,6 +85,7 @@ export default function CreateTopic() {
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="Въведете заглавие на темата"
                         required
+                        error={errors.title}
                     />
 
                     <FormField
@@ -74,11 +97,12 @@ export default function CreateTopic() {
                         required
                         textarea
                         rows={8}
+                        error={errors.content}
                     />
 
                     <div className="form-actions">
-                        <Button type="submit" disabled={loading} fullWidth>
-                            {loading ? "Създаване..." : "Създай"}
+                        <Button type="submit" disabled={isSubmitting} fullWidth>
+                            {isSubmitting ? "Запазване..." : "Създай тема"}
                         </Button>
                     </div>
                 </form>

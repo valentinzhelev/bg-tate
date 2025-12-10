@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
 import FormField from "../components/FormField";
 import Button from "../components/Button";
@@ -12,27 +12,48 @@ export default function Login() {
     const { login } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
+    const [serverError, setServerError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const onLogin = async (e) => {
         e.preventDefault();
-        setError("");
+        
+        const newErrors = {};
 
-        if (!email.trim() || !password.trim()) {
-            setError("Моля, попълнете и двете полета.");
+        if (!email.trim()) {
+            newErrors.email = "Моля, въведи имейл.";
+        }
+
+        if (!password.trim()) {
+            newErrors.password = "Моля, въведи парола.";
+        } else if (password.trim().length < 6) {
+            newErrors.password = "Паролата трябва да е поне 6 символа.";
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            setServerError("");
             return;
         }
 
-        setLoading(true);
         try {
-            await login(email.trim(), password);
-            navigate("/catalog");
+            setIsSubmitting(true);
+            setErrors({});
+            setServerError("");
+
+            await login(email.trim(), password.trim());
+
+            const searchParams = new URLSearchParams(location.search);
+            const from = searchParams.get("from") || "/catalog";
+            navigate(from, { replace: true });
         } catch (err) {
-            setError("Грешно потребителско име или парола.");
+            console.error(err);
+            setServerError("Възникна грешка при вход. Моля, опитай отново.");
         } finally {
-            setLoading(false);
+            setIsSubmitting(false);
         }
     };
 
@@ -42,7 +63,7 @@ export default function Login() {
                 <PageTitle>Вход</PageTitle>
 
                 <form className="form" onSubmit={onLogin}>
-                    <ErrorMessage message={error} />
+                    {serverError && <ErrorMessage message={serverError} />}
 
                     <FormField
                         label="Email"
@@ -52,6 +73,7 @@ export default function Login() {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Въведете вашия email"
                         required
+                        error={errors.email}
                     />
 
                     <FormField
@@ -62,11 +84,12 @@ export default function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Въведете вашата парола"
                         required
+                        error={errors.password}
                     />
 
                     <div className="form-actions">
-                        <Button type="submit" disabled={loading} fullWidth>
-                            {loading ? "Влизане..." : "Вход"}
+                        <Button type="submit" disabled={isSubmitting} fullWidth>
+                            {isSubmitting ? "Влизане..." : "Вход"}
                         </Button>
                     </div>
 

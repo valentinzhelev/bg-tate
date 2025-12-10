@@ -16,8 +16,9 @@ export default function EditTopic() {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
+    const [serverError, setServerError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         topicService.getById(topicId)
@@ -26,31 +27,52 @@ export default function EditTopic() {
                 setContent(topic.content);
             })
             .catch(() => {
-                setError("Грешка при зареждане на темата.");
+                setServerError("Грешка при зареждане на темата.");
             });
     }, [topicId]);
 
     const onEdit = async (e) => {
         e.preventDefault();
-        setError("");
 
-        if (!title.trim() || !content.trim()) {
-            setError("Попълнете всички полета");
+        const trimmedTitle = title.trim();
+        const trimmedContent = content.trim();
+
+        const newErrors = {};
+
+        if (!trimmedTitle) {
+            newErrors.title = "Моля, въведи заглавие.";
+        } else if (trimmedTitle.length < 3) {
+            newErrors.title = "Заглавието трябва да е поне 3 символа.";
+        }
+
+        if (!trimmedContent) {
+            newErrors.content = "Моля, въведи съдържание.";
+        } else if (trimmedContent.length < 10) {
+            newErrors.content = "Съдържанието трябва да е поне 10 символа.";
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            setServerError("");
             return;
         }
 
-        setLoading(true);
         try {
+            setIsSubmitting(true);
+            setErrors({});
+            setServerError("");
+
             await topicService.update(
                 topicId,
-                { title: title.trim(), content: content.trim() },
+                { title: trimmedTitle, content: trimmedContent },
                 user.accessToken
             );
             navigate(`/catalog/${topicId}`);
         } catch (err) {
-            setError("Грешка при запазване на промените. Моля опитайте отново.");
+            console.error(err);
+            setServerError("Възникна грешка при записа на темата. Моля, опитай отново.");
         } finally {
-            setLoading(false);
+            setIsSubmitting(false);
         }
     };
 
@@ -60,7 +82,7 @@ export default function EditTopic() {
                 <PageTitle>Редакция</PageTitle>
 
                 <form className="form" onSubmit={onEdit}>
-                    <ErrorMessage message={error} />
+                    {serverError && <ErrorMessage message={serverError} />}
 
                     <FormField
                         label="Заглавие"
@@ -70,6 +92,7 @@ export default function EditTopic() {
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="Въведете заглавие на темата"
                         required
+                        error={errors.title}
                     />
 
                     <FormField
@@ -81,11 +104,12 @@ export default function EditTopic() {
                         required
                         textarea
                         rows={8}
+                        error={errors.content}
                     />
 
                     <div className="form-actions">
-                        <Button type="submit" disabled={loading} fullWidth>
-                            {loading ? "Запазване..." : "Запази"}
+                        <Button type="submit" disabled={isSubmitting} fullWidth>
+                            {isSubmitting ? "Запазване..." : "Запази промените"}
                         </Button>
                     </div>
                 </form>
