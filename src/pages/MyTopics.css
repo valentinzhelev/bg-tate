@@ -1,23 +1,36 @@
+.my-topics-page {
+  padding: 48px 0;
+}
+
+.my-topics-title {
+  color: var(--color-heading);
+  margin-bottom: 24px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 .topic-list {
   list-style: none;
   padding: 0;
-  margin: var(--spacing-6) 0;
+  margin: 0;
 }
 
 .topic-list-item {
   margin-bottom: var(--spacing-3);
-  padding: var(--spacing-3);
-  background-color: var(--color-bg-secondary);
-  border-radius: var(--radius-md);
-  transition: background-color var(--transition-fast);
+  padding: var(--spacing-4);
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all var(--transition-fast);
 }
 
 .topic-list-item:hover {
-  background-color: var(--color-bg-tertiary);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
 }
 
 .topic-link {
-  color: var(--color-text-primary);
+  color: var(--color-heading);
   text-decoration: none;
   font-weight: var(--font-weight-medium);
   display: block;

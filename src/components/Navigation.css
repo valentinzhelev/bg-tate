@@ -17,7 +17,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 24px;
+  padding: 10px 24px; /* keep normal header height */
+  gap: 20px;
 }
 
 .nav-left {
@@ -25,27 +26,22 @@
   align-items: center;
 }
 
-.nav-logo-wrapper {
+.nav-logo-area {
   display: flex;
   align-items: center;
-  height: 42px;
-  overflow: hidden;
-  margin-right: 16px;
 }
 
 .nav-logo-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   text-decoration: none;
-  line-height: 0;
 }
 
-.nav-logo-wrapper .nav-logo {
-  height: 110px;
+.nav-logo-img {
+  height: 46px; /* slightly larger, still proportional */
   width: auto;
-  object-fit: contain;
-  object-position: center top;
   display: block;
+  object-fit: contain;
   margin: 0;
   padding: 0;
 }
@@ -59,19 +55,35 @@
 
 .nav-search-form {
   width: 100%;
-  max-width: 420px;
+  max-width: 480px;
 }
 
 .nav-search-inner {
-  width: 100%;
+  position: relative;
+}
+
+.nav-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-search-icon-svg {
+  width: 16px;
+  height: 16px;
 }
 
 .nav-search-input {
   width: 100%;
-  padding: 7px 14px;
+  padding: 8px 14px 8px 34px;
   border-radius: 999px;
-  border: 1px solid var(--color-border-subtle);
-  background-color: var(--color-bg-muted);
+  border: 1px solid #e5e7eb;
+  background-color: #f9fafb;
   font-size: 0.9rem;
   outline: none;
   transition:
@@ -82,14 +94,13 @@
 }
 
 .nav-search-input::placeholder {
-  color: var(--color-text-muted);
-  opacity: 0.9;
+  color: #9ca3af;
 }
 
 .nav-search-input:focus {
-  border-color: var(--color-primary);
+  border-color: #0f766e;
   background-color: #ffffff;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.15);
 }
 
 .nav-right {
@@ -106,7 +117,7 @@
 /* Button-like links on the right */
 .nav-link-button {
   border-radius: 999px;
-  padding: 7px 18px;
+  padding: 9px 20px;
   font-size: 0.9rem;
   font-weight: 500;
   line-height: 1.2;
@@ -168,25 +179,30 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 28px;
-  padding: 0 var(--container-padding);
+  gap: 32px;
+  padding: 10px 0;
 }
 
 /* main nav links: Начало / Форум */
 .nav-main-link {
   position: relative;
-  padding: 12px 0;
-  color: #ffffff;
+  padding: 14px 0;
+  color: #f9fafb;
   text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   opacity: 0.9;
-  transition: opacity 0.16s ease;
+  transition:
+    opacity 0.16s ease,
+    color 0.16s ease;
   white-space: nowrap;
 }
 
 .nav-main-link:hover {
   opacity: 1;
+  color: #ffffff;
 }
 
 /* base underline (hidden by default) */
@@ -194,11 +210,11 @@
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -4px;
+  bottom: 4px;
   width: 46px;
-  height: 4px;
+  height: 3px;
   border-radius: 999px;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.85);
   transform: translateX(-50%) scaleX(0);
   transform-origin: center;
   opacity: 0;
@@ -210,10 +226,15 @@
 /* hover: underline grows from center */
 .nav-main-link:hover::after {
   transform: translateX(-50%) scaleX(1);
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
 /* active link: underline always fully visible */
+.nav-main-link-active {
+  opacity: 1;
+  color: #ffffff;
+}
+
 .nav-main-link-active::after {
   transform: translateX(-50%) scaleX(1);
   opacity: 1;

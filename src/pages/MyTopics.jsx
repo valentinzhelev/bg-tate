@@ -26,7 +26,7 @@ export default function MyTopics() {
   if (isLoading) {
     return (
       <Container>
-        <section className="page">
+        <section className="page my-topics-page">
           <p>Зареждане на твоите теми...</p>
         </section>
       </Container>
@@ -36,9 +36,9 @@ export default function MyTopics() {
   if (topics.length === 0) {
     return (
       <Container>
-        <section className="page">
-          <h1>Моите теми</h1>
-          <p>Все още нямаш създадени теми.</p>
+        <section className="page my-topics-page">
+          <h1 className="my-topics-title">Моите теми</h1>
+          <p style={{ color: 'var(--color-text-soft)' }}>Все още нямаш създадени теми.</p>
         </section>
       </Container>
     );
@@ -46,8 +46,8 @@ export default function MyTopics() {
 
   return (
     <Container>
-      <section className="page">
-        <h1>Моите теми</h1>
+      <section className="page my-topics-page">
+        <h1 className="my-topics-title">Моите теми</h1>
         <ul className="topic-list">
           {topics.map((topic) => (
             <li key={topic.id} className="topic-list-item">

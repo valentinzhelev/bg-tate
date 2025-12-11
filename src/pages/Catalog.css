@@ -1,5 +1,5 @@
 .forum-page {
-  padding: var(--spacing-8) var(--spacing-0);
+  padding: 48px 0;
 }
 
 .forum-header {
@@ -17,13 +17,13 @@
 .forum-title {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
+  color: var(--color-heading);
   margin-bottom: var(--spacing-2);
 }
 
 .forum-subtitle {
   font-size: var(--font-size-base);
-  color: var(--color-text-secondary);
+  color: var(--color-text-soft);
   margin: 0;
 }
 
@@ -32,10 +32,11 @@
 }
 
 .forum-topics {
-  background-color: var(--color-bg-primary);
+  background-color: #ffffff;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .catalog-search-info {
@@ -109,7 +110,7 @@
 .forum-topic-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-medium);
-  color: var(--color-text-primary);
+  color: var(--color-heading);
   line-height: var(--line-height-normal);
   margin: 0;
 }
@@ -138,7 +139,7 @@
 .forum-stat-value {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
+  color: var(--color-heading);
 }
 
 .forum-stat-label {

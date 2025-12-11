@@ -1,25 +1,31 @@
 .page-static {
-  max-width: 720px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 48px 24px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .page-static h1 {
-  margin-bottom: var(--spacing-6);
+  margin-bottom: 24px;
+  color: var(--color-heading);
 }
 
 .page-static ul {
-  margin-bottom: var(--spacing-6);
-  padding-left: var(--spacing-6);
+  margin-bottom: 24px;
+  padding-left: 24px;
 }
 
 .page-static li {
-  margin-bottom: var(--spacing-3);
-  line-height: var(--line-height-relaxed);
+  margin-bottom: 12px;
+  line-height: 1.7;
+  color: var(--color-text-soft);
 }
 
 .page-static p {
-  margin-bottom: var(--spacing-4);
-  line-height: var(--line-height-relaxed);
+  margin-bottom: 16px;
+  line-height: 1.7;
+  color: var(--color-text-soft);
 }
 

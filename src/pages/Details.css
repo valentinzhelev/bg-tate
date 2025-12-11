@@ -1,5 +1,5 @@
 .topic-page {
-  padding: var(--spacing-8) var(--spacing-0);
+  padding: 48px 0;
 }
 
 .topic-header {
@@ -29,17 +29,18 @@
 .topic-title {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
+  color: var(--color-heading);
   margin: 0;
   line-height: var(--line-height-tight);
 }
 
 .topic-posts {
-  background-color: var(--color-bg-primary);
+  background-color: #ffffff;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: 16px;
   overflow: hidden;
   margin-bottom: var(--spacing-8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .topic-post {
@@ -66,7 +67,7 @@
   width: 64px;
   height: 64px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-primary) 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
   color: var(--color-text-inverse);
   display: flex;
   align-items: center;
@@ -82,7 +83,7 @@
 .post-author-name {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
+  color: var(--color-heading);
   margin-bottom: var(--spacing-1);
 }
 
@@ -121,7 +122,7 @@
 
 .post-text {
   line-height: var(--line-height-relaxed);
-  color: var(--color-text-primary);
+  color: var(--color-text);
   font-size: var(--font-size-base);
 }
 

@@ -1,7 +1,7 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import logo from "../assets/bg-tate-logo-nobg.png";
+import logo from "../assets/logo.jpg";
 import "./Navigation.css";
 
 function Navigation() {
@@ -36,9 +36,9 @@ function Navigation() {
       <div className="nav-top">
         <div className="nav-top-inner">
           <div className="nav-left">
-            <div className="nav-logo-wrapper">
+            <div className="nav-logo-area">
               <Link to="/" className="nav-logo-link" onClick={closeMenu}>
-                <img src={logo} alt="bg-tate" className="nav-logo" />
+                <img src={logo} alt="BG-Tate" className="nav-logo-img" />
               </Link>
             </div>
           </div>
@@ -47,6 +47,18 @@ function Navigation() {
           <div className="nav-search">
             <form onSubmit={handleSearchSubmit} className="nav-search-form">
               <div className="nav-search-inner">
+                <span className="nav-search-icon" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 20 20"
+                    className="nav-search-icon-svg"
+                    focusable="false"
+                  >
+                    <path
+                      d="M8.5 3a5.5 5.5 0 0 1 4.356 8.877l3.133 3.134a1 1 0 0 1-1.414 1.414l-3.134-3.133A5.5 5.5 0 1 1 8.5 3zm0 2a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
                 <input
                   type="search"
                   className="nav-search-input"
